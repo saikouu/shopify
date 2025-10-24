@@ -1,0 +1,106 @@
+{% comment %}
+  Homepage Section Navigation
+  Renders section links on the homepage, normal menu on other pages
+{% endcomment %}
+
+{% if template.name == 'index' %}
+  {%- comment -%} Homepage: Show section navigation links {%- endcomment -%}
+  <div class="menu-list menu-list--mobile menu-list--homepage{% if transparent == blank %} color-{{ block_settings.color_scheme_navigation_bar }}{% endif %}">
+    <div class="menu-list__scroll-container">
+      <ul class="menu-list__list list-unstyled" role="list">
+        <li>
+          <a href="#hero-section" class="menu-list__item homepage-nav-link" data-section="hero">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#about-section" class="menu-list__item homepage-nav-link" data-section="about">
+            About
+          </a>
+        </li>
+        <li>
+          <a href="#products-section" class="menu-list__item homepage-nav-link" data-section="products">
+            Games
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <style>
+    .menu-list--homepage .menu-list__item {
+      transition: all 0.3s ease;
+    }
+    
+    .menu-list--homepage .menu-list__item:hover,
+    .menu-list--homepage .menu-list__item:focus {
+      opacity: 0.7;
+    }
+    
+    .menu-list--homepage .menu-list__item.active {
+      font-weight: 600;
+      border-bottom: 2px solid currentColor;
+    }
+  </style>
+
+  <script>
+    // Smooth scroll for homepage section links
+    document.addEventListener('DOMContentLoaded', function() {
+      const sectionLinks = document.querySelectorAll('.homepage-nav-link');
+      
+      sectionLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          
+          if (targetSection) {
+            const headerHeight = document.querySelector('header-component').offsetHeight || 80;
+            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+
+      // Highlight active section on scroll
+      window.addEventListener('scroll', function() {
+        const sections = ['hero-section', 'about-section', 'products-section'];
+        const headerHeight = document.querySelector('header-component').offsetHeight || 80;
+        
+        sections.forEach(sectionId => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= headerHeight + 100 && rect.bottom >= headerHeight) {
+              sectionLinks.forEach(link => link.classList.remove('active'));
+              const activeLink = document.querySelector(`a[href="#${sectionId}"]`);
+              if (activeLink) activeLink.classList.add('active');
+            }
+          }
+        });
+      });
+    });
+  </script>
+
+{% else %}
+  {%- comment -%} Other pages: Show normal menu {%- endcomment -%}
+  {% if block_settings.navigation_bar == true %}
+    <div class="menu-list menu-list--mobile{% if transparent == blank %} color-{{ block_settings.color_scheme_navigation_bar }}{% endif %}" style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto;">
+      <div class="menu-list__scroll-container">
+        <ul class="menu-list__list list-unstyled" role="list">
+          {% for link in block_settings.menu.links %}
+            <li>
+              <a href="{{ link.url }}" id="MenuItem-{{ link.handle }}" class="menu-list__item" {% if link.current %}aria-current="page"{% endif %}>
+                {{- link.title -}}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

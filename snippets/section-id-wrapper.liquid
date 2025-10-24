@@ -1,0 +1,18 @@
+{% comment %}
+  Section ID Wrapper for Homepage
+  This adds IDs to sections for navigation and smooth scrolling
+{% endcomment %}
+
+{% assign section_id = '' %}
+
+{% if section.type == 'hero' %}
+  {% assign section_id = 'hero-section' %}
+{% elsif section.type == 'section' or section.name contains 'About' or section.name contains 'pull_quote' %}
+  {% assign section_id = 'about-section' %}
+{% elsif section.type == 'product-list' or section.name contains 'Featured' or section.name contains 'collection' %}
+  {% assign section_id = 'products-section' %}
+{% endif %}
+
+<div id="{{ section_id }}" class="homepage-section" data-section-type="{{ section.type }}">
+  {{ content_for_layout }}
+</div>

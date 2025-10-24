@@ -26,34 +26,10 @@
     </div>
 
   {% when 'navigation_bar' %}
-    {% if block_settings.navigation_bar == true %}
-      <div
-        class="menu-list menu-list--mobile{% if transparent == blank %} color-{{ block_settings.color_scheme_navigation_bar }}{% endif %}"
-        style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto;"
-      >
-        <div class="menu-list__scroll-container">
-          <ul
-            class="menu-list__list list-unstyled"
-            role="list"
-          >
-            {% for link in block_settings.menu.links %}
-              <li>
-                <a
-                  href="{{ link.url }}"
-                  id="MenuItem-{{ link.handle }}"
-                  class="menu-list__item"
-                  {% if link.current %}
-                    aria-current="page"
-                  {% endif %}
-                >
-                  {{- link.title -}}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    {% endif %}
+    {% render 'header-navigation-conditional', 
+      block_settings: block_settings,
+      transparent: transparent
+    %}
   {% else %}
     <header-menu
       ref="headerMenu"

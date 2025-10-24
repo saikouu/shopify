@@ -1,0 +1,63 @@
+/* Homepage Sections - Modern Layout */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section spacing and structure */
+.homepage-section {
+  scroll-margin-top: 80px; /* Account for sticky nav */
+}
+
+/* Hero section improvements - center the tagline */
+#hero-section .hero {
+  min-height: 70vh;
+}
+
+#hero-section .hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+#hero-section .hero__content > * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* About section styling */
+#about-section {
+  padding: 4rem 0;
+}
+
+#about-section .section__content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Products section */
+#products-section {
+  padding: 4rem 0;
+}
+
+/* Ensure consistent spacing */
+.homepage-section + .homepage-section {
+  margin-top: 0;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 749px) {
+  #hero-section .hero {
+    min-height: 60vh;
+  }
+  
+  #about-section,
+  #products-section {
+    padding: 2rem 0;
+  }
+}
