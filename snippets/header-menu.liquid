@@ -24,7 +24,19 @@
 %}
 
 {% capture children %}
+  {%- assign has_community_link = false -%}
+  {%- assign community_url = '' -%}
+  {%- assign community_blog = blogs['community'] -%}
+  {%- if community_blog -%}
+    {%- assign community_url = community_blog.url -%}
+  {%- else -%}
+    {%- assign community_url = routes.blogs_url | default: '/blogs' -%}
+  {%- endif -%}
   {% for link in block_settings.menu.links %}
+    {%- assign title_lower = link.title | default: '' | downcase -%}
+    {%- if title_lower contains 'community' -%}
+      {%- assign has_community_link = true -%}
+    {%- endif -%}
     <li
       role="presentation"
       class="menu-list__list-item"
@@ -67,6 +79,28 @@
       {%- endif -%}
     </li>
   {% endfor %}
+  {%- comment -%}
+    Fallback: Inject a Community tab if it's not already in the menu.
+    Links to the blogs index so the store owner doesn't need to add it manually.
+  {%- endcomment -%}
+  {%- if has_community_link == false -%}
+    <li
+      role="presentation"
+      class="menu-list__list-item"
+      on:focus="/activate"
+      on:blur="/deactivate"
+      on:pointerenter="/activate"
+      on:pointerleave="/deactivate"
+    >
+      <a
+        href="{{ community_url }}"
+        data-skip-node-update="true"
+        class="menu-list__link"
+      >
+        <span class="menu-list__link-title">Community</span>
+      </a>
+    </li>
+  {%- endif -%}
   <li
     class="menu-list__list-item"
     role="presentation"

@@ -20,6 +20,9 @@
   >
     {% content_for 'blocks' %}
 
+    {%- comment -%} Community Post Creator Button {%- endcomment -%}
+    {% render 'community-post-creator' %}
+
     {%- paginate blog.articles by 12 -%}
       <span ref="viewMorePrevious"></span>
       <div

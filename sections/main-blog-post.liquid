@@ -15,6 +15,7 @@
       {% render 'spacing-style', settings: section.settings %}
     "
   >
+    <a class="back-to-community" href="{{ blog.url | default: routes.blogs_url | default: '/blogs' }}">Back to Community</a>
     <header>
       {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
       {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}

@@ -1,0 +1,3 @@
+# Ignore unsupported or experimental files
+templates/blogs.json
+sections/main-blogs.liquid

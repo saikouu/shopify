@@ -37,6 +37,10 @@
       <link rel="stylesheet" href="{{ 'homepage-sections.css' | asset_url }}">
       <script src="{{ 'homepage-sections.js' | asset_url }}" defer></script>
     {% endif %}
+    
+    {% if template.name == 'blog' or template.name == 'article' %}
+      <link rel="stylesheet" href="{{ 'community-steam-style.css' | asset_url }}">
+    {% endif %}
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">

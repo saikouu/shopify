@@ -1,0 +1,118 @@
+{% comment %}
+  Community Blogs Index
+  - Renders the Community blog (blogs['community']) as a Steam-inspired feed
+  - Falls back to a helpful empty state if the blog is missing
+{% endcomment %}
+
+<script
+  src="{{ 'blog-posts-list.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+<blog-posts-list section-id="{{ section.id }}">
+  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
+  <div
+    class="
+      section
+      color-{{ section.settings.color_scheme }}
+      blog-posts
+      spacing-style
+      size-style
+    "
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    {% content_for 'blocks' %}
+
+    <div class="main-blog" style="width:100%">
+      <h2 class="community-title">Community</h2>
+    </div>
+
+    {% assign community_blog = blogs['community'] %}
+
+    {% if community_blog %}
+      {% render 'community-post-creator' %}
+
+      {%- paginate community_blog.articles by 12 -%}
+        <span ref="viewMorePrevious"></span>
+        <div
+          ref="grid"
+          class="blog-posts-container"
+          data-last-page="{{ paginate.pages }}"
+        >
+          {% for article in community_blog.articles %}
+            <div
+              class="blog-post-item"
+              ref="cards[]"
+              data-page="{{ paginate.current_page }}"
+            >
+              {% content_for 'block', id: 'static-blog-post-card', type: '_blog-post-card', article: article %}
+            </div>
+          {% endfor %}
+        </div>
+        <span ref="viewMoreNext"></span>
+      {%- endpaginate -%}
+    {% else %}
+      <div class="blog-empty-state">
+        <h3>No Community blog found.</h3>
+        <p>Create a blog named <strong>community</strong> in your Shopify admin to enable the Community feed.</p>
+      </div>
+    {% endif %}
+  </div>
+</blog-posts-list>
+
+{% stylesheet %}
+  .blog-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    opacity: 0.8;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Community feed",
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "text" },
+    { "type": "icon" },
+    { "type": "image" },
+    { "type": "button" },
+    { "type": "video" },
+    { "type": "group" },
+    { "type": "spacer" },
+    { "type": "_divider" }
+  ],
+  "disabled_on": { "groups": ["header"] },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    { "type": "header", "content": "t:content.padding" },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}
